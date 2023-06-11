@@ -12,25 +12,24 @@ const Header = () => {
     }
   return (
     <div>
-        <div className=" mt-2 relative">
-            <div className="flex justify-between ">
-                <div className="flex">
-                    <MenuIcon className={"text-white h-36 w-9 min-w-[2rem]"}/>
-                    <Image  src={logoImage}  className={"w-64 h-36 min-w-[2rem] " }/>
-                    <div className="flex justify-center items-center  ">
-                        <div className="bg-[#292929] rounded-3xl flex h-20  ">
-                            <div className="flex justify-center items-center  ">
-                                <input className=" bg-[#292929] text-[#d8e0f2] h-9 pl-4" />
-                                <SearchIcon className={"text-[#d8e0f2] h-9  "}/>
+        <div className=" mt-2 relative w-full">
+            <div className="flex justify-between w-full">
+                <div className="flex w-full justify-center items-center">
+                    <MenuIcon className={"text-white  w-full"} style={{ width: '2rem', height: '5rem' }}/>
+                    <Image  src={logoImage}  className={"h-32 w-full " }/>
+                    <div className="flex justify-center items-center  w-full hidden sm:flex">
+                        <div className="bg-[#292929] rounded-3xl flex h-16  w-full">
+                            <div className="flex justify-center items-center w-full ">
+                                <input className=" bg-[#292929] text-[#d8e0f2] h-9 pl-4 w-full" />
+                                <SearchIcon className={"text-[#d8e0f2] h-9  w-full "} style={{ width: '2rem', height: '5rem' }}/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="flex ">
-                    <SearchIcon className={"text-white  w-9 sm:hidden "} onClick={toggleSearch}/>
+                <div className="flex  items-center " >
+                    <SearchIcon className="text-white sm:hidden w-full" onClick={toggleSearch} style={{ width: '2rem', height: '5rem' }}/>
 
-
-                    <LoginIcon className={"text-white h-36 w-9 "}/>
+                    <LoginIcon className={"text-white h-36  w-full"} style={{ width: '2rem', height: '5rem' }}/>
                 </div>
             </div>
 
