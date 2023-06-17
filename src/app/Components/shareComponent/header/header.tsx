@@ -72,7 +72,7 @@ const Header = () => {
                   </ul>
               </div>
           </div>:null}
-          <Slider/>
+          
 
 
 
