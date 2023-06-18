@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Header from "@/app/Components/shareComponent/header/header";
 import LandingPage from "./Components/landingPage";
+import Calender from "./Components/shareComponent/calender";
 
 export default function Home() {
   return (

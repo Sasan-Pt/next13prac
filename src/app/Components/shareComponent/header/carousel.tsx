@@ -1,3 +1,4 @@
+"use client"
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
 import logoImage from "../../../../../public/logo.png"
