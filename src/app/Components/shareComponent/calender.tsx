@@ -1,29 +1,33 @@
 "use client"
-import { data } from "autoprefixer";
 import {useEffect,useState} from "react"
+
+interface TestaItem {
+  date: number;
+  message: string[];
+  monthName: string;
+}
 const Calender=()=>{
-    const [currentTime,setCurrentTime]=useState<string>()
+    const [currentTime,setCurrentTime]=useState<any>()
+    const [testa,setTesta]=useState<TestaItem[]>([])
+
     useEffect(() => {
         setCurrentTime(() => {
-          const timeServer =  ("0" + new Date)
-
-          return `${timeServer}`;
+          return new Date()
         });
       }, []);
 
       console.log(currentTime)
+     
 
-      const serverTime = new Date();
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const options = { timeZone: userTimeZone };
-      const userLocalTime = serverTime?.toLocaleString(undefined, options);
-      const test=serverTime?.getDate()
+      const userLocalTime = currentTime?.toLocaleString(undefined, options);
+      const test=currentTime?.getDate()
       console.log(test)
       console.log(userLocalTime?.slice(17))
 
-
       
-      function getDaysInMonth(year, month) {
+      function getDaysInMonth(year:number, month:number) {
         const numDays = new Date(year, month, 0).getDate();
         const days = [];
       
@@ -36,29 +40,35 @@ const Calender=()=>{
       
       // Example usage
       const year = 2023;
-      const month = 7; // Note: January is month 0, February is month 1, and so on
-      
+      const month = 2; // Note: January is month 0, February is month 1, and so on
       const daysInMonth = getDaysInMonth(year, month);
-      console.log(daysInMonth); 
 
-      function getMonthName(monthh) {
+      function getMonthName(month:number) {
         const date = new Date(2000, month, 1);
         const options = { month: 'long' };
         return date.toLocaleString('en-US', options);
       }
       
       // Example usage
-      const monthh = 2; // Note: January is month 0, February is month 1, and so on
+      // Note: January is month 0, February is month 1, and so on
       
-      const monthName = getMonthName(monthh);
-      console.log(monthName); 
+      const monthName = getMonthName(month);
+      const message=["sdasdasd","sdasdasda","dsadasda","sdasdasda","dsadasda","sdasdasda","dsadasda"]
+
+      function testol(){
+        for(let i = 1; i <= daysInMonth.length+1; i++){
+          setTesta(prevState => [...prevState, { date: i, message: message.filter(h=>h[i]),monthName:monthName }]);
+        }
+      }
+      console.log(testa)
 
 
     return(
         <div className="bg-[#202020]">
             <span>
                 <h1 className="text-white">Estemated Time</h1>
-                <div className="text-white">{userLocalTime?.slice(17)}</div>
+                <div className="text-white">{userLocalTime}</div>
+                <button onClick={testol}>click me bitch</button>
             </span>
         </div>
     )
