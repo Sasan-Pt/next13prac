@@ -7,8 +7,9 @@ interface TestaItem {
   monthName: string;
 }
 const Calender=()=>{
-    const [currentTime,setCurrentTime]=useState<any>()
+    
     const [testa,setTesta]=useState<TestaItem[]>([])
+    const [currentTime,setCurrentTime]=useState<Date>()
 
     useEffect(() => {
         setCurrentTime(() => {
@@ -16,15 +17,12 @@ const Calender=()=>{
         });
       }, []);
 
-      console.log(currentTime)
      
 
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const options = { timeZone: userTimeZone };
       const userLocalTime = currentTime?.toLocaleString(undefined, options);
       const test=currentTime?.getDate()
-      console.log(test)
-      console.log(userLocalTime?.slice(17))
 
       
       function getDaysInMonth(year:number, month:number) {
@@ -70,6 +68,31 @@ const Calender=()=>{
                 <div className="text-white">{userLocalTime}</div>
                 <button onClick={testol}>click me bitch</button>
             </span>
+            <div className="relative -my-0 mx-auto w-4/5 h-[600px]">
+              <div className="bg-green h-full relative">
+                
+                  <button className="absolute top-1/2 -translate-y-1/2 -right-9">sdgssagfsg</button>
+      
+              <ul className="p-0 m-0 list-none">
+                {testa.map((x,index)=>{
+                  return(
+                    <li key={index} className="bg-slate-500 mt-2 absolute w-full top-0 bottom-0 ">
+                      <div className="w-full h-full">
+                      <div>{x.monthName}</div>
+                      <div>{x.message}</div>
+                      <div>{x.date}</div>
+                      </div>
+
+                    </li>
+                  )
+                })}
+              </ul>
+              
+              <button className="absolute top-1/2 -translate-y-1/2 -left-9">sfdag</button>
+
+                
+              </div>
+            </div>
         </div>
     )
 }
