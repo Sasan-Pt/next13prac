@@ -4,6 +4,7 @@ import LandingPage from "./Components/landingPage";
 import Calender from "./Components/shareComponent/calender";
 
 export default function Home() {
+
   return (
     <div className={"grid grid-cols-[2%,1fr,2%] "}>
       <div className="col-start-2 col-end-3">
