@@ -129,28 +129,34 @@ const Calender=()=>{
                 <div className="text-white">{userLocalTime}</div>
                 <button onClick={testol}>click me bitch</button>
             </span>
-            <div className="relative -my-0 mx-auto w-4/5 h-[600px]">
-              <div className="bg-green h-full relative">
+            <div className="flex  w-full">
 
-                  <button className="absolute top-1/2 -translate-y-1/2 -right-9">sdgssagfsg</button>
 
-              <ul className="p-0 m-0 list-none">
+                {/*  <button className="absolute top-1/2 -translate-y-1/2 -right-9">sdgssagfsg</button>*/}
+                <div className="w-full">
+                    <div className=" relative text-white w-full " >
+                        <div className="absolute w-full flex space-x-6 truncate" >
                 {testa.map((x,index)=>{
                   return(
-                    <li key={index} className={`bg-slate-500 mt-2 absolute w-full top-0 bottom-0`} ref={ulinfo} style={{left : size *index+"px"}} >
+                      <div className="list-none  w-full" style={{left : size *index+"px"}}>
+                    <div key={index} className={` mt-2 bg-red-600`} ref={ulinfo}  >
                       <div >{x.monthName}</div>
                       <div>{x.message}</div>
                       <div>{x.date}</div>
-
-                    </li>
+                    </div>
+                      </div>
                   )
                 })}
-              </ul>
+                        </div>
+                    </div>
+                </div>
+
+
 
               <button className="absolute top-1/2 -translate-y-1/2 -left-9" >sfdag</button>
 
 
-              </div>
+
             </div>
         </div>
     )
