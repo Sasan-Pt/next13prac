@@ -63,7 +63,7 @@ const LandingPage=async ()=> {
                     {dummyData.map((x,index)=>{
                         return(
                         <div key={index} className='basis-1/2'>
-                        <Image src={x.image} className='w-full h-auto' />
+                        <Image src={x.image} className='w-full h-auto' alt='' />
                         </div>
                         )
                     })}
