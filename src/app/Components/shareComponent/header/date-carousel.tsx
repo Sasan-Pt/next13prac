@@ -3,12 +3,14 @@ import { TestaItem } from "../calender";
 
 type Props = {
   data: TestaItem[];
+  width?: string;
 };
 
-const DateCarousel: FC<Props> = ({ data }) => {
+const DateCarousel: FC<Props> = ({ data, width }) => {
   const [move, setMove] = useState<number>(1);
   const [movingState, setMovingState] = useState<number>(3);
   const [size, setSize] = useState<number>(1);
+  const [heightHolder, setHeightHolder] = useState<number>(1);
   const [movingCarousel, setMovingCarousel] =
     useState<string>("-translate-x-[0px]");
 
@@ -18,18 +20,20 @@ const DateCarousel: FC<Props> = ({ data }) => {
 
   useEffect(() => {
     if (ref && ref?.current?.children[0]) {
+      setHeightHolder(ref?.current?.children[0].getBoundingClientRect().height);
       setSize(
         () =>
           ref?.current?.children[0].getBoundingClientRect().width || undefined
       );
       const ulinfoChildren = ref?.current || undefined;
-
-      //setObjectSizeToArray(()=>{return Object.values(ulinfoChildren)})
     }
-  }, [ref, ref.current, size]);
+  }, [ref, size, ref?.current?.children]);
 
   const setingMovingCarousel = (e: any) => {
+    console.log(e.target.clientHeight);
+    console.log(e.target);
     const sizeWithOutPixel = Number(e.style.left.split("px")[0]);
+
     ref.current
       ? (ref.current.style.transform =
           "translateX(-" + sizeWithOutPixel + "px" + ")")
@@ -60,29 +64,29 @@ const DateCarousel: FC<Props> = ({ data }) => {
   }
 
   return (
-    <div className="flex  w-full relative">
-      <div className=" w-1/2 mx-auto">
-        <div className=" relative text-white  ">
+    <div className="flex  w-full relative  h-full">
+      <div className={` ${width} mx-auto`}>
+        <div className={` relative text-white w-full`}>
           <button
-            className="absolute top-1/2 -translate-y-1/2 -right-9 bg-white"
+            className={`absolute   -right-[30px] bg-white w-[3%]  h-[${heightHolder}px] mt-2 bg-opacity-50`}
             onClick={(e) => MovingCarousel()}
           >
-            sdgssagfsg
+            sd
           </button>
           <div className="absolute w-full flex space-x-6 overflow-hidden ">
             <ul
               className={`list-none  flex  w-full`}
               ref={ref}
-              onClick={(e) => setingMovingCarousel(e.target)}
+              onClick={(e) => setingMovingCarousel(e)}
             >
               {data.map((x, index) => {
                 return (
                   <li
                     key={Math.random()}
-                    className={`mt-2 bg-red-600 mr-4 shadow-sm`}
+                    className={`mt-2 bg-red-600 mr-4 shadow-sm ]]`}
                     style={{ left: size * index + "px" }}
                   >
-                    <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center w-[100px]">
                       <div>{x.monthName}</div>
                       <div>{x.message}</div>
                       <div>{x.date}</div>
@@ -94,7 +98,7 @@ const DateCarousel: FC<Props> = ({ data }) => {
           </div>
 
           <button
-            className="absolute top-1/2 -translate-y-1/2 -left-9 bg-white"
+            className={`absolute -left-[30px] bg-white w-[3%] h-[${heightHolder}px] mt-2 bg-opacity-50`}
             onClick={(e) => MovingCarousel()}
           >
             sadsd

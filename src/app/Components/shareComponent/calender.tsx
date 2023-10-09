@@ -21,6 +21,8 @@ const Calender = () => {
     });
   }, []);
 
+  console.log(currentTime);
+  console.log(currentTime?.getDate());
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const options = { timeZone: userTimeZone };
   const userLocalTime = currentTime?.toLocaleString(undefined, options);
@@ -68,7 +70,7 @@ const Calender = () => {
       <span>
         <h1 className="text-white">Estemated Time</h1>
         <div className="text-white">{userLocalTime}</div>
-        <DateCarousel data={dates} />
+        <DateCarousel data={dates} width={"w-[94%]"} />
       </span>
     </div>
   );
