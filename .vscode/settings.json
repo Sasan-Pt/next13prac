@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "Default Dark Modern",
-    "workbench.view.alwaysShowHeaderActions": false,
-    "workbench.iconTheme": "material-icon-theme"
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.view.alwaysShowHeaderActions": false,
+  "workbench.iconTheme": "fira-code-material-minimal"
 }
