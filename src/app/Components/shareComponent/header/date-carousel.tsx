@@ -11,6 +11,7 @@ const DateCarousel = () => {
   const [dates, setDates] = useState<DateType[]>([]);
   const [currentTime, setCurrentTime] = useState<Date>();
   const [openCalender, setOpenCalender] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState();
 
   useEffect(() => {
     setCurrentTime(() => {
@@ -62,7 +63,11 @@ const DateCarousel = () => {
         <h1 className="text-white">Estemated Time</h1>
         <div className="text-white">{userLocalTime}</div>
       </span>
-      <ReuseCarousel data={dates} width={"w-[94%]"} />
+      <ReuseCarousel
+        data={dates}
+        width={"w-[94%]"}
+        setSelectedDate={setSelectedDate}
+      />
     </>
   );
 };
