@@ -2,6 +2,8 @@ import React, { FC, useEffect, useRef, useState, ReactNode } from "react";
 import { DateType } from "./date-carousel";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { SetStateAction } from "react";
+import cx from "classnames";
+import { get } from "http";
 
 type Props = {
   data: DateType[];
@@ -19,6 +21,7 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
   const [testolf, setTestolf] = useState<any>();
+  const [stopRender, setStopRender] = useState(false);
 
   const ref = useRef<any>(null);
 
@@ -34,15 +37,19 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
   }, [ref, size, ref?.current?.children]);
 
   const setingMovingCarousel = (index: any) => {
-    setSelectedIndex(index);
+    console.log("i was tiggred");
+    if (ref.current.children[index]) {
+      console.log("i was tiggred2");
+      setSelectedIndex(index);
 
-    ref.current.style.transform = "translateX(-" + index * size + "px" + ")";
-    setSelectedDate(
-      ref.current.children[index].children[0].children[2].innerText
-    );
+      ref.current.style.transform = "translateX(-" + index * size + "px" + ")";
+      setSelectedDate(
+        ref.current.children[index].children[0].children[2].innerText
+      );
 
-    setMovingState(index);
-    setMove(index * size);
+      setMovingState(index);
+      setMove(index * size);
+    }
   };
 
   const MovingCarousel = () => {
@@ -74,12 +81,14 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
     });
   }
 
+  const getDate = new Date().getDay();
+
   return (
-    <div className="flex  w-full relative  h-full">
+    <div className="relative  flex h-full  w-full">
       <div className={` ${width} mx-auto`}>
-        <div className={` relative text-white w-full`}>
+        <div className={` relative w-full text-white`}>
           <div
-            className={`absolute -right-[18px] bg-white w-[3%]  mt-2 bg-opacity-50 h-[72px] `}
+            className={`absolute -right-[18px] mt-2 h-[72px]  w-[3%] bg-white bg-opacity-50 `}
           >
             <button
               onClick={(e) => MovingCarousel()}
@@ -88,28 +97,40 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
               <ChevronRight className="w-4" />
             </button>
           </div>
-          <div className="absolute w-full flex space-x-6 overflow-hidden ">
-            <ul className={`list-none flex w-full `} ref={ref}>
-              {data.map((x, index) => (
-                <li
-                  key={Math.random()}
-                  className={`mt-2 !bg-${
-                    selectedIndex === index ? "yellow-300" : "black"
-                  } mr-4 shadow-sm`}
-                  style={{ left: size * index + "px" }}
-                  onClick={() => setingMovingCarousel(index)}
-                >
-                  <div className="flex flex-col items-center justify-center w-[100px]">
-                    <div>{x.monthName}</div>
-                    <div>{x.message}</div>
-                    <div>{x.date}</div>
-                  </div>
-                </li>
-              ))}
+          <div className="absolute flex w-full space-x-6 overflow-hidden ">
+            <ul className={`flex w-full list-none `} ref={ref}>
+              {data.map((x, index) => {
+                if (
+                  getDate === x.date &&
+                  !stopRender &&
+                  ref.current.children[index]
+                ) {
+                  setingMovingCarousel(index);
+                  setStopRender(true);
+                }
+                return (
+                  <li
+                    key={Math.random()}
+                    className={cx(
+                      `mt-2 ${
+                        selectedIndex === index ? "bg-red-400" : "bg-red-200"
+                      } mr-4 shadow-sm`
+                    )}
+                    style={{ left: size * index + "px" }}
+                    onClick={() => setingMovingCarousel(index)}
+                  >
+                    <div className="flex w-[100px] flex-col items-center justify-center">
+                      <div>{x.monthName}</div>
+                      <div>{x.message}</div>
+                      <div>{x.date}</div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
-          <div className="bg-white -left-[18px]  w-[3%]  top-2 bg-opacity-50 h-[72px]  relative">
+          <div className="relative -left-[18px]  top-2  h-[72px] w-[3%] bg-white  bg-opacity-50">
             <button
               className={`absolute top-6`}
               onClick={(e) => MovingCarouselBackwards()}
