@@ -3,7 +3,6 @@ import { DateType } from "./date-carousel";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { SetStateAction } from "react";
 import cx from "classnames";
-import { get } from "http";
 
 type Props = {
   data: DateType[];
@@ -38,10 +37,8 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
 
   const setingMovingCarousel = (index: any) => {
     console.log("i was tiggred");
-    if (ref.current.children[index]) {
-      console.log("i was tiggred2");
+    if (ref.current.children[index] && size) {
       setSelectedIndex(index);
-
       ref.current.style.transform = "translateX(-" + index * size + "px" + ")";
       setSelectedDate(
         ref.current.children[index].children[0].children[2].innerText
@@ -103,9 +100,10 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
                 if (
                   getDate === x.date &&
                   !stopRender &&
-                  ref.current.children[index]
+                  ref.current.children[index] &&
+                  size !== 1
                 ) {
-                  setingMovingCarousel(index);
+                  setingMovingCarousel(getDate);
                   setStopRender(true);
                 }
                 return (
