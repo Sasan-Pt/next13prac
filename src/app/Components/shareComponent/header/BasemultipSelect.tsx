@@ -1,7 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import cx from "classnames";
-import { forEach, includes, isEqual, some } from "lodash";
-import React, { useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 
 type BaseMultiSelectType = {
   data: {
@@ -16,11 +15,23 @@ type BaseMultiSelectType = {
   }[];
   className?: string;
   optionClassName?: string;
+  multipSelect?: boolean;
+  labelProps?: string;
+  label?: string;
 };
 
 const BaseMultipSelect = (props: BaseMultiSelectType) => {
-  const { data, defaultValue, onSelect, value, className, optionClassName } =
-    props;
+  const {
+    data,
+    defaultValue,
+    onSelect,
+    value,
+    className,
+    optionClassName,
+    multipSelect = false,
+    labelProps,
+    label,
+  } = props;
   const [isListOpen, setIsListOpen] = useState(false);
   const [holdState, setHoldState] = useState<any>({});
 
@@ -63,23 +74,42 @@ const BaseMultipSelect = (props: BaseMultiSelectType) => {
     }
   }, []);
 
-  const dropdownref = useRef(null);
+  const dropdownref = useRef<HTMLDivElement | null>(null);
   const optionref = useRef(null);
+
+  // useEffect(() => {
+  //   const onClick = (e: any) => {
+  //     console.log(!isEqual(e.target, dropdownref?.current?.children?.[0]));
+  //     console.log(!isEqual(e.target, optionref.current));
+  //     if (
+  //       !isEqual(e.target, dropdownref?.current?.children?.[0]) &&
+  //       !isEqual(e.target, optionref.current)
+  //     ) {
+  //       console.log(e.target.innerText, "hola2");
+  //       console.log(optionref.current, "hola");
+  //       console.log(
+  //         optionref?.current?.children?.childnodes.forEach((node) => node),
+  //         "hola3"
+  //       );
+  //       setIsListOpen(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("click", onClick);
+
+  //   return () => {
+  //     document.removeEventListener("click", onClick);
+  //   };
+  // }, [dropdownref]);
 
   useEffect(() => {
     const onClick = (e: any) => {
-      console.log(!isEqual(e.target, dropdownref?.current?.children?.[0]));
-      console.log(!isEqual(e.target, optionref.current));
+      console.log(dropdownref?.current?.children?.[0]?.children[0]);
+      console.log(e.target);
       if (
-        !isEqual(e.target, dropdownref?.current?.children?.[0]) &&
-        !isEqual(e.target, optionref.current)
+        e.target !== dropdownref?.current?.children?.[0] &&
+        e.target !== dropdownref?.current?.children?.[0]?.children[0]
       ) {
-        console.log(e.target.innerText, "hola2");
-        console.log(optionref.current, "hola");
-        console.log(
-          optionref?.current?.children?.childnodes.forEach((node) => node),
-          "hola3"
-        );
         setIsListOpen(false);
       }
     };
@@ -89,67 +119,87 @@ const BaseMultipSelect = (props: BaseMultiSelectType) => {
     return () => {
       document.removeEventListener("click", onClick);
     };
-  }, [dropdownref]);
+  }, []);
+  // useEffect(() => {
+  //   const onClick = (e: any) => {
+  //     if (e.target !== dropdownref.current) {
+  //       setIsListOpen(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("click", onClick);
+
+  //   return () => {
+  //     document.removeEventListener("click", onClick);
+  //   };
+  // }, [dropdownref]);
 
   return (
-    <div
-      className={"relative"}
-      onClick={(e) => e.stopPropagation()}
-      ref={dropdownref}
-    >
+    <div className={cx(`w-full gap-x-2`, labelProps)}>
+      {label && label}
       <div
-        role={"button"}
-        onClick={ToggleList}
-        className={cx(
-          `flex justify-between border-2 border-[#e5e7eb] p-2 rounded-lg items-center ${className}`
-        )}
+        className={"relative flex w-full"}
+        onClick={(e) => e.stopPropagation()}
+        ref={dropdownref}
       >
-        <div className={" leading-7 text-xs"}>
-          {Object.keys(holdState).length === 0
-            ? defaultValue
-            : `${Object.keys(holdState).length} مورد انتخاب شده است`}
-        </div>
-        <div className={"flex"}>
-          <div className={"flex"}>
-            {Object.keys(holdState).length !== 0 ? (
-              <div
-                className={"bg-[#fef0ed] text-[#f3787b] leading-7 text-xs p-1"}
-                onClick={() => toggleItem()}
-              >
-                پاک کردن همه
-              </div>
-            ) : null}
-          </div>
-          {isListOpen ? (
-            <ChevronUpIcon name="angle-up" className={"w-4"} />
-          ) : (
-            <ChevronDownIcon name="angle-down" className={"w-4"} />
-          )}
-        </div>
-      </div>
-      {isListOpen && (
         <div
-          className={` absolute bg-white h-40 overflow-y-auto soft-scrollbar z-50 shadow-lg border-azureish-white2 border-1 rounded-md w-full px-1 space-y-1 mt-1 ${optionClassName}`}
-          onClick={(e) => e.stopPropagation()}
-          ref={optionref}
+          onClick={() => ToggleList()}
+          className={cx(
+            `!flex justify-between border-2 border-[#e5e7eb] p-2 rounded-lg items-center ${className}`
+          )}
         >
-          {data
-            ? data.map((item) => (
+          <div className={" leading-7 text-xs"}>
+            {Object.keys(holdState).length === 0
+              ? defaultValue
+              : `${Object.keys(holdState).length} مورد انتخاب شده است`}
+          </div>
+          <div className={"flex"}>
+            <div className={"flex"}>
+              {Object.keys(holdState).length !== 0 ? (
                 <div
-                  role="button"
-                  className={cx(
-                    "font-semibold leading-7 text-xs",
-                    holdState[item.label] ? "bg-[#f6f4ff]" : null
-                  )}
-                  key={item.value}
-                  onClick={() => toggleItem(item.value, item.label)}
+                  className={
+                    "bg-[#fef0ed] text-[#f3787b] leading-7 text-xs p-1"
+                  }
+                  onClick={() => toggleItem()}
                 >
-                  {item.label}
+                  پاک کردن همه
                 </div>
-              ))
-            : null}
+              ) : null}
+            </div>
+            {isListOpen ? (
+              <ChevronUpIcon name="angle-up" className={"w-4"} />
+            ) : (
+              <ChevronDownIcon name="angle-down" className={"w-4"} />
+            )}
+          </div>
         </div>
-      )}
+        {isListOpen && (
+          <div
+            className={cx(
+              ` absolute bg-white h-40 overflow-y-auto soft-scrollbar z-50 shadow-lg border-azureish-white2 border-1 rounded-md w-full px-1 space-y-1 mt-1 ${optionClassName}`,
+              multipSelect && "grid grid-cols-3"
+            )}
+            onClick={(e) => e.stopPropagation()}
+            ref={optionref}
+          >
+            {data
+              ? data.map((item) => (
+                  <div
+                    role="button"
+                    className={cx(
+                      "font-semibold leading-7 text-xs flex gap-x-4  ",
+                      holdState[item.label] ? "bg-[#f6f4ff]" : null
+                    )}
+                    key={item.value}
+                    onClick={() => toggleItem(item.value, item.label)}
+                  >
+                    {item.label}
+                  </div>
+                ))
+              : null}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

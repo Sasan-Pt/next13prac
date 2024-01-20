@@ -36,7 +36,6 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
   }, [ref, size, ref?.current?.children]);
 
   const setingMovingCarousel = (index: any) => {
-    console.log("i was tiggred");
     if (ref.current.children[index] && size) {
       setSelectedIndex(index);
       ref.current.style.transform = "translateX(-" + index * size + "px" + ")";
@@ -78,7 +77,7 @@ const ReuseCarousel: FC<Props> = ({ data, width, setSelectedDate }) => {
     });
   }
 
-  const getDate = new Date().getDay();
+  const getDate = new Date().getDate();
 
   return (
     <div className="relative  flex h-full  w-full">

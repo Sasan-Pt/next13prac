@@ -5,6 +5,7 @@ import Image from "next/image";
 import Calender from "./shareComponent/calender";
 import QuickFilter from "./shareComponent/header/filter";
 import BaseMultipSelect from "./shareComponent/header/BasemultipSelect";
+import RecentlyAdded from "./shareComponent/header/recentlyAdded";
 
 const LandingPage = async () => {
   const dummyData = [
@@ -59,7 +60,7 @@ const LandingPage = async () => {
     <div>
       <Slider />
       <h1 className="text-white text-2xl mt-8">Recently updated</h1>
-      <QuickFilter />
+
       <div className="flex flex-wrap justify-between">
         {dummyData.map((x, index) => {
           return (
@@ -70,6 +71,8 @@ const LandingPage = async () => {
         })}
       </div>
       <Calender />
+      <QuickFilter />
+      <RecentlyAdded />
     </div>
   );
 };
